@@ -55,8 +55,12 @@ script = ExtResource("1_qgdqf")
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dm6i3")
 animation = &"run"
-frame_progress = 0.541289
+frame_progress = 0.865511
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -12)
 shape = SubResource("RectangleShape2D_vt1if")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
