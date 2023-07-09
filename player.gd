@@ -1,9 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 100.0
-const ACCELERATION = 800.0
-const FRICTION = 1000.0
-const JUMP_VELOCITY = -300.0
+@export var movement_data: PlayerMovementData
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -16,36 +13,43 @@ func _physics_process(delta: float):
 
     handle_jump()
 
-    var direction = Input.get_axis("ui_left", "ui_right")
+    var input_axis = Input.get_axis("ui_left", "ui_right")
 
-    apply_friction(direction, delta)
-    handle_acceleration(direction, delta)
-    handle_animation(direction)
+    apply_friction(input_axis, delta)
+    apply_air_resistance(input_axis, delta)
+    handle_acceleration(input_axis, delta)
+    handle_animation(input_axis)
 
     var was_on_floor = is_on_floor()
     move_and_slide()
     if was_on_floor and not is_on_floor() and velocity.y >= 0:
         coyote_timer.start()
+    if Input.is_action_just_pressed("ui_accept"):
+        movement_data = load("res://FasterMovementData.tres")
 
 func apply_gravity(delta: float):
     if not is_on_floor():
-        velocity.y += gravity * delta
+        velocity.y += gravity * movement_data.gravity_scale * delta
 
 func handle_jump():
     if is_on_floor() or not coyote_timer.is_stopped():
-        if Input.is_action_just_pressed("ui_accept"):
-            velocity.y = JUMP_VELOCITY
+        if Input.is_action_just_pressed("ui_up"):
+            velocity.y = movement_data.jump_velocity
     if not is_on_floor():
-        if Input.is_action_just_released("ui_accept") and velocity.y < JUMP_VELOCITY / 3:
-            velocity.y = JUMP_VELOCITY / 3
+        if Input.is_action_just_released("ui_up") and velocity.y < movement_data.jump_velocity / 3:
+            velocity.y = movement_data.jump_velocity / 3
 
 func handle_acceleration(input_axis: float, delta: float):
     if input_axis:
-        velocity.x = move_toward(velocity.x, input_axis * SPEED, ACCELERATION * delta)
+        velocity.x = move_toward(velocity.x, input_axis * movement_data.speed, movement_data.acceleration * delta)
 
 func apply_friction(input_axis: float, delta: float):
-    if input_axis == 0:
-        velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+    if input_axis == 0 and is_on_floor():
+        velocity.x = move_toward(velocity.x, 0, movement_data.friction * delta)
+
+func apply_air_resistance(input_axis: float, delta: float):
+    if input_axis == 0 and not is_on_floor():
+        velocity.x = move_toward(velocity.x, 0, movement_data.air_resistance * delta)
 
 func handle_animation(inpus_axis: float):
     if velocity.x != 0:

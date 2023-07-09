@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://d3ex0i15hdem2"]
+[gd_scene load_steps=10 format=3 uid="uid://d3ex0i15hdem2"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_qgdqf"]
+[ext_resource type="Resource" uid="uid://4sa3w44u6p1b" path="res://DefaultMovementData.tres" id="2_02j3i"]
 [ext_resource type="Texture2D" uid="uid://dreiy8b45vsu7" path="res://robot-thing.png" id="2_5tpua"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6tte3"]
@@ -47,15 +48,16 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vt1if"]
 size = Vector2(7, 24)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D"]
 floor_snap_length = 2.0
 script = ExtResource("1_qgdqf")
+movement_data = ExtResource("2_02j3i")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dm6i3")
 animation = &"run"
-frame_progress = 0.865511
+frame_progress = 0.965685
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -12)
