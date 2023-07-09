@@ -57,7 +57,7 @@ movement_data = ExtResource("2_02j3i")
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_dm6i3")
 animation = &"run"
-frame_progress = 0.965685
+frame_progress = 0.269242
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, -12)
