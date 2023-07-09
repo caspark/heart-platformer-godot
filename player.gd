@@ -12,6 +12,7 @@ func _physics_process(delta: float):
     apply_gravity(delta)
 
     handle_jump()
+    handle_wall_jump()
 
     var input_axis = Input.get_axis("ui_left", "ui_right")
 
@@ -43,9 +44,18 @@ func handle_jump():
         if Input.is_action_just_released("ui_up") and velocity.y < movement_data.jump_velocity / 3:
             velocity.y = movement_data.jump_velocity / 3
 
-        if Input.is_action_just_pressed("ui_up") and air_jump:
+        if Input.is_action_just_pressed("ui_up") and not is_on_wall() and air_jump:
             velocity.y = movement_data.jump_velocity / 2
             air_jump = false
+
+func handle_wall_jump():
+    if not is_on_wall() or is_on_floor():
+        return
+
+    if Input.is_action_just_pressed("ui_up"):
+        var normal = get_wall_normal()
+        velocity.x = movement_data.wall_jump_x * sign(normal.x)
+        velocity.y = movement_data.jump_velocity
 
 func handle_acceleration(input_axis: float, delta: float):
     if not is_on_floor():
