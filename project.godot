@@ -15,6 +15,10 @@ run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Events="*res://Events.gd"
+
 [display]
 
 window/size/viewport_width=320
@@ -28,6 +32,7 @@ window/stretch/mode="canvas_items"
 2d_physics/layer_1="World"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Hazards"
+2d_physics/layer_4="Collectables"
 
 [rendering]
 
